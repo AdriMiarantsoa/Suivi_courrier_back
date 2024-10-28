@@ -36,4 +36,8 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, String
     @Query("UPDATE Utilisateur u SET u.mot_de_passe = :mot_de_passe WHERE u.id_utilisateur = :id_utilisateur")
     void updateMdp(@Param("mot_de_passe") String mot_de_passe,@Param("id_utilisateur") String id_utilisateur);
 
+    @Modifying
+    @Query("DELETE FROM Utilisateur u WHERE u.id_utilisateur = :id_utilisateur")
+    void deleteUtilisateurById(@Param("id_utilisateur") String id_utilisateur);
+
 }

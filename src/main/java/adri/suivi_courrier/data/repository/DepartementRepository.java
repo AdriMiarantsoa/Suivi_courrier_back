@@ -18,5 +18,9 @@ public interface DepartementRepository extends JpaRepository<Departement, String
     @Query("SELECT d FROM Departement d WHERE d.id_departement = :id_departement")
     Departement findDepartementById(@Param("id_departement") String id_departement);
 
+    @Modifying
+    @Query("UPDATE Departement r SET r.nom_departement = :nom_departement,r.responsable = :responsable,r.dept_parent = :dept_parent WHERE r.id_departement = :id_departement")
+    void updateDepartement(@Param("id_departement") String id_departement,@Param("nom_departement") String nom_departement,@Param("responsable") String responsable,@Param("dept_parent") Departement dept_parent);
+
     
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +46,16 @@ public class RoleController {
     public ResponseEntity<Void> deleteRole(@PathVariable String id_role) {
         roleService.deleteRole(id_role);
         return ResponseEntity.noContent().build();  
+    }
+
+    @PutMapping("/updateRole")
+    public ResponseEntity<String> update_role(@RequestBody Role role) {
+        try {
+            roleService.updateRole(role);
+            return ResponseEntity.ok("role mis à jour avec succès");
+          } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erreur lors de la mise à jour du role : " + e.getMessage());
+          }
     }
 
 }

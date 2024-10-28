@@ -14,7 +14,7 @@ public class Courrier {
     private String id_courrier;
     
     @Column
-    private String nom_courrier; //facture
+    private String nom_courrier; 
 
     @Column
     private String expediteur;

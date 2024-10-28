@@ -57,4 +57,10 @@ public class DepartementService {
 
         departementRepository.deleteDepartementById(id_departement);
     }
+
+    @Transactional
+    public void updateDept(Departement d) {
+        System.out.println(d);
+        departementRepository.updateDepartement(d.getId_departement(),d.getNom_departement(),d.getResponsable(),d.getDept_parent());
+    }
 }

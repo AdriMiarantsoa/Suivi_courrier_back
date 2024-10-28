@@ -38,4 +38,9 @@ public class RoleService {
     public void deleteRole(String id_role) {
         roleRepository.deleteRoleById(id_role);
     }
+
+    @Transactional
+    public void updateRole(Role r) {
+        roleRepository.updateRole(r.getId_role(),r.getNom_role());
+    }
 }

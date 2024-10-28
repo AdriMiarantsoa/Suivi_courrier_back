@@ -1,6 +1,7 @@
 package adri.suivi_courrier.service;
 
 import adri.suivi_courrier.data.entity.Utilisateur;
+import adri.suivi_courrier.data.repository.UtilisateurDepartementRepository;
 import adri.suivi_courrier.data.repository.UtilisateurRepository;
 import jakarta.transaction.Transactional;
 
@@ -23,6 +24,9 @@ public class UtilisateurService {
 
     @Autowired
     private UtilisateurRepository utilisateurRepository;
+
+    @Autowired
+    private UtilisateurDepartementRepository utilisateurDepartementRepository;
 
     public Utilisateur saveUtilisateur(Utilisateur utilisateur) {
         String nextId = jdbcTemplate.queryForObject("SELECT generate_id('USER',5, 'seqUtilisateur')", String.class);
@@ -59,4 +63,12 @@ public class UtilisateurService {
 
         utilisateurRepository.updateMdp(hashedPassword , u.getId_utilisateur());
     }
+
+    @Transactional
+    public void deleteUtilisateur(String id_utilisateur) {
+        utilisateurDepartementRepository.deleteByUtilisateurId(id_utilisateur);
+
+        utilisateurRepository.deleteUtilisateurById(id_utilisateur);;
+    }
+
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -75,5 +76,17 @@ public class DepartementController {
     @GetMapping("/notifications/{id_departement}")
     public Integer getNotificationCountByDept(@PathVariable String id_departement) {
         return notifService.countNotificationsByDept(id_departement);
+    }
+
+    @PutMapping("/updateDepartement")
+    public ResponseEntity<String> update_dept(@RequestBody Departement departements) {
+        try {
+            System.out.println("dept donnee : " +departements.getId_departement() +" " + departements.getDept_parent());
+            DepartementService.updateDept(departements);
+            return ResponseEntity.ok("departement mis à jour avec succès");
+          } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Erreur lors de la mise à jour du departement : " + e.getMessage());
+          }
     }
 }

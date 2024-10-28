@@ -18,4 +18,8 @@ public interface UtilisateurDepartementRepository extends JpaRepository<Utilisat
     @Modifying
     @Query("DELETE FROM UtilisateurDepartement ud WHERE ud.departement.id_departement = :id_departement")
     void deleteByDepartementId(@Param("id_departement") String id_departement);
+
+    @Modifying
+    @Query("DELETE FROM UtilisateurDepartement ud WHERE ud.utilisateur.id_utilisateur = :id_utilisateur")
+    void deleteByUtilisateurId(@Param("id_utilisateur") String id_utilisateur);
 }

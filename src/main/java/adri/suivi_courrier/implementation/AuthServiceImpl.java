@@ -88,12 +88,12 @@ public class AuthServiceImpl implements AuthenticationService{
             System.out.println("Login attempt for " + request.getNom_utilisateur());
             Utilisateur utilisateur = userRepository.getUsersByNameAndMail(request.getNom_utilisateur(),request.getEmail());
             if (utilisateur == null) {
-                throw new Exception("User does not exist");
+                throw new Exception("Utilisateur inéxistant");
             }
                 if (passwordEncoder.matches(request.getMot_de_passe(), utilisateur.getMot_de_passe())) {
 
                     if (!utilisateur.getApproved()) {
-                        throw new Exception("User is not approved yet,try later");
+                        throw new Exception("Utilisateur non approuvé,réessayer plutard!");
                     }
     
                     System.out.println("mdp valide");
@@ -102,7 +102,7 @@ public class AuthServiceImpl implements AuthenticationService{
                     return j;
                 }
             // Utilisateur ou mot de passe invalide
-            throw new Exception("Invalid username or password");
+            throw new Exception("Nom ou Mot de passe invalide!");
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
