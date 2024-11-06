@@ -1,7 +1,6 @@
 package adri.suivi_courrier.data.export;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -23,7 +22,7 @@ public class ExcelExporter {
         Sheet sheet = workbook.createSheet("Courriers");
     
         Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("Status");
+        headerRow.createCell(0).setCellValue("ID");
         headerRow.createCell(1).setCellValue("Document");
         headerRow.createCell(2).setCellValue("Description");
         headerRow.createCell(3).setCellValue("Expeditor");
@@ -34,7 +33,7 @@ public class ExcelExporter {
         int rowIndex = 1;
         for (CourriersRecu courrier : courriers) {
             Row row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(courrier.getStatut());
+            row.createCell(0).setCellValue(courrier.getId_courrier());
             row.createCell(1).setCellValue(courrier.getNom_courrier());
             row.createCell(2).setCellValue(courrier.getDescription());
             row.createCell(3).setCellValue(courrier.getExpediteur());

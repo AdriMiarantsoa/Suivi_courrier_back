@@ -68,6 +68,12 @@ public class CourrierController {
         return ResponseEntity.ok(Courriers);
     }
 
+    @GetMapping("/courrier/{id_courrier}/{departement}")
+    public ResponseEntity <Courrier> getOneCourrier(@PathVariable String id_courrier,@PathVariable Departement departement) {
+        Courrier Courriers = CourrierService.getCourrierByIdAndDept(id_courrier,departement);
+        return ResponseEntity.ok(Courriers);
+    }
+
     @GetMapping("/courriers_attente")
     public List<Courrier> getCourriersEnAttente() {
       return CourrierService.getCourriersEnAttente();
@@ -91,7 +97,7 @@ public class CourrierController {
     
     @GetMapping("/departement/{id_departement}/alerte")
     public List<Courrier> getCourrierAlerte(@PathVariable String id_departement) {
-      System.out.println("ito ilay id alerte"+ id_departement);
+      System.out.println("ito ilay id alerte : "+ id_departement);
       return CourrierService.getCourrierAlerte(id_departement);
     }
 
@@ -118,4 +124,15 @@ public class CourrierController {
     public List<StatCourrierDept> getCurrentMonthAndYearStatistics(@PathVariable String departementId) {
       return CourrierService.getCurrentMonthAndYearStatistics(departementId);
     }
+
+    @GetMapping("/verification/{id_courrier}/{departement}")
+    public ResponseEntity<?> verifAcces(@PathVariable("id_courrier") String id_courrier, @PathVariable("departement") Departement departement) {
+      try {
+          CourrierService.VerifCourrier(id_courrier, departement);
+          return ResponseEntity.ok("ok");
+      } catch (Exception e) {
+          return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+      }
+    }
+
 }

@@ -1,6 +1,7 @@
 package adri.suivi_courrier.controller;
-import adri.suivi_courrier.data.entity.Reception;
-import adri.suivi_courrier.service.ReceptionService;
+import adri.suivi_courrier.data.entity.Departement;
+import adri.suivi_courrier.data.entity.Transfert;
+import adri.suivi_courrier.service.TransfertService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,24 +18,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
-public class ReceptionController {
+public class TransfertController {
 
     @Autowired
-    private ReceptionService ReceptionService;
+    private TransfertService transfertService;
 
-    @PostMapping("/insert_reception")
-    public ResponseEntity<String> submitReception(@RequestBody Reception Reception) {
+
+    @PostMapping("/insert_Transfert")
+    public ResponseEntity<String> submitTransfert(@RequestBody Transfert transfert) {
         try {
-            ReceptionService.saveReception(Reception);
-            return ResponseEntity.ok("Reception submitted successfully");
+            transfertService.saveTransfert(transfert);
+            return ResponseEntity.ok("Transfert submitted successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
-    @GetMapping("/courrier_reception/{id_courrier}")
-    public ResponseEntity <Reception> getOneReception(@PathVariable String id_courrier) {
-        Reception Courriers = ReceptionService.getReceptionByIdcourrier(id_courrier);
+    @GetMapping("/courrier_transfert/{id_courrier}/{departement}")
+    public ResponseEntity <Transfert> getOneTransfert(@PathVariable String id_courrier,@PathVariable Departement departement) {
+        Transfert Courriers = transfertService.getTransfertByIdAndDept(id_courrier, departement);
         return ResponseEntity.ok(Courriers);
     }
     

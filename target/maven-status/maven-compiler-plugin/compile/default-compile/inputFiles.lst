@@ -8,6 +8,7 @@
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/controller/DepartementController.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/controller/ReceptionController.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/controller/RoleController.java
+/home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/controller/TransfertController.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/controller/UtilisateurController.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/controller/UtilisateurNonApprouvesController.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/entity/Admin.java
@@ -18,6 +19,7 @@
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/entity/Reception.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/entity/Role.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/entity/StatCourrierDept.java
+/home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/entity/Transfert.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/entity/Utilisateur.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/entity/UtilisateurDepartement.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/entity/UtilisateurNonApprouves.java
@@ -30,6 +32,7 @@
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/repository/NotificationViewRepository.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/repository/ReceptionRepository.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/repository/RoleRepository.java
+/home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/repository/TransfertRepository.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/repository/UtilisateurDepartementRepository.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/repository/UtilisateurNonApprouvesRepository.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/data/repository/UtilisateurRepository.java
@@ -47,6 +50,7 @@
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/service/NotificationViewService.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/service/ReceptionService.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/service/RoleService.java
+/home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/service/TransfertService.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/service/UserService.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/service/UtilisateurDepartementService.java
 /home/adrienna/Documents/Stage/suivi_courrier/src/main/java/adri/suivi_courrier/service/UtilisateurNonApprouvesService.java

@@ -5,6 +5,7 @@ import adri.suivi_courrier.data.entity.Departement;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -47,6 +48,12 @@ public interface CourrierRepository extends JpaRepository<Courrier, String> {
     //stat generale mois
     @Query(value = "SELECT year, month, dept_destinataire, SUM(courrier_count) AS courrier_count FROM v_courrier_par_mois WHERE EXTRACT(YEAR FROM CURRENT_DATE) = year AND dept_destinataire = :dept_destinataire GROUP BY year, month, dept_destinataire", nativeQuery = true)
     List<Object[]> findCurrentYearStatistics(@Param("dept_destinataire") String dept_destinaire);
+
+    @Query("SELECT c FROM Courrier c WHERE c.id_courrier = :id_courrier AND c.dept_destinataire = :dept_destinataire")
+    Courrier findByIdAndDept(@Param("id_courrier") String id_courrier,@Param("dept_destinataire") Departement dept_destinataire);
+
+    @Query("SELECT c FROM Courrier c WHERE c.id_courrier = :id_courrier")
+    Optional<Courrier> findById(@Param("id_courrier") String id_courrier);
 
 }
 

@@ -3,13 +3,16 @@ package adri.suivi_courrier.service;
 import adri.suivi_courrier.data.entity.Courrier;
 import adri.suivi_courrier.data.entity.Departement;
 import adri.suivi_courrier.data.entity.StatCourrierDept;
+import adri.suivi_courrier.data.entity.Transfert;
 import adri.suivi_courrier.data.generator.CourrierIdGenerator;
 import adri.suivi_courrier.data.repository.CourrierRepository;
+import adri.suivi_courrier.data.repository.TransfertRepository;
 import jakarta.transaction.Transactional;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,6 +29,9 @@ public class CourrierService {
 
     @Autowired
     private CourrierIdGenerator courrierIdGenerator;
+
+    @Autowired
+    private TransfertRepository transfertRepository;
 
     public void saveCourrier(Courrier courrier) {
         try {
@@ -57,6 +63,10 @@ public class CourrierService {
 
     public List<Courrier> getAllCourriers() {
         return courrierRepository.findAll();
+    }
+
+    public Courrier getCourrierByIdAndDept(String id_courrier,Departement dept_destinataire) {
+        return courrierRepository.findByIdAndDept(id_courrier, dept_destinataire);
     }
 
     public List<Courrier> getCourriersEnAttente() {
@@ -111,4 +121,15 @@ public class CourrierService {
         }
         return stats;
     }
+
+    public void VerifCourrier(String id_courrier,Departement  dept_destinataire) throws Exception
+    {
+        Courrier c = courrierRepository.findByIdAndDept(id_courrier, dept_destinataire);
+        Transfert t = transfertRepository.findByIdAndDept(id_courrier, dept_destinataire);
+        Optional<Courrier> cr = courrierRepository.findById(id_courrier);
+        if (!cr.isPresent()) throw new Exception("Courrier inexistant!");
+        if(c==null && t==null) throw new Exception("Vous n'avez pas accès à ce courrier.");
+        
+    }
+
 }
