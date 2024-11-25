@@ -93,7 +93,7 @@ public class AuthServiceImpl implements AuthenticationService{
                 if (passwordEncoder.matches(request.getMot_de_passe(), utilisateur.getMot_de_passe())) {
 
                     if (!utilisateur.getApproved()) {
-                        throw new Exception("Utilisateur non approuvé,réessayer plutard!");
+                        throw new Exception("Non approuvé,réessayer plutard!");
                     }
     
                     System.out.println("mdp valide");

@@ -25,9 +25,9 @@ public class ExcelExporter {
         headerRow.createCell(0).setCellValue("ID");
         headerRow.createCell(1).setCellValue("Document");
         headerRow.createCell(2).setCellValue("Description");
-        headerRow.createCell(3).setCellValue("Expeditor");
-        headerRow.createCell(4).setCellValue("Date of treatment");
-        headerRow.createCell(5).setCellValue("Receive by");
+        headerRow.createCell(3).setCellValue("Expediteur");
+        headerRow.createCell(4).setCellValue("Date de traitement");
+        headerRow.createCell(5).setCellValue("Reçu par");
         headerRow.createCell(6).setCellValue("Departement");
     
         int rowIndex = 1;

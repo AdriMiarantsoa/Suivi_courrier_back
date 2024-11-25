@@ -47,6 +47,10 @@ public class UtilisateurService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (Utilisateur) authentication.getPrincipal();
     }
+    
+    public Utilisateur getUtilisateurById(String id_utilisateur) {
+        return utilisateurRepository.findById_utilisateur(id_utilisateur);
+    }
 
     @Transactional
     public void updateApprove(String id) {

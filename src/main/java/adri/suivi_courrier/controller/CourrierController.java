@@ -2,10 +2,13 @@ package adri.suivi_courrier.controller;
 import adri.suivi_courrier.data.entity.Courrier;
 import adri.suivi_courrier.data.entity.CourriersRecu;
 import adri.suivi_courrier.data.entity.Departement;
+import adri.suivi_courrier.data.entity.Fichier;
 import adri.suivi_courrier.data.entity.StatCourrierDept;
 import adri.suivi_courrier.data.export.ExcelExporter;
 import adri.suivi_courrier.service.CourrierService;
+import adri.suivi_courrier.service.FichierService;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -36,6 +39,9 @@ public class CourrierController {
     @Autowired
     private ExcelExporter excelExporter;
 
+    @Autowired
+    private FichierService fichierService;
+
     @PostMapping("/courriers/export")
     public ResponseEntity<byte[]> exportCourriers(@RequestBody List<CourriersRecu> courriers, @RequestParam String departementName) throws IOException {
         byte[] excelFile = excelExporter.exportToExcel(courriers, departementName);
@@ -47,15 +53,51 @@ public class CourrierController {
     }
 
     @PostMapping("/insert_courrier")
-    public ResponseEntity<String> submitCourrier(@RequestBody Courrier Courrier) {
+    public ResponseEntity<?> submitCourrier(
+      @RequestParam("nom_courrier") String nom_courrier,
+      @RequestParam("expediteur") String expediteur,
+      @RequestParam("description") String description,
+      @RequestParam("dept_destinataire") Departement dept_destinataire,
+      @RequestParam(value = "files", required = false) MultipartFile[] files) {
         try {
-            CourrierService.saveCourrier(Courrier); // Ensure this method handles Courrier objects correctly
+          if (files != null && files.length > 3) {
+            throw new Exception("Maximum 3 apercus du courrier");
+          }
+          
+        Courrier courrier = new Courrier();
+          courrier.setNom_courrier(nom_courrier);
+          courrier.setExpediteur(expediteur);
+          courrier.setDescription(description);
+          courrier.setDept_destinataire(dept_destinataire);
+
+          // System.out.println("dept0000000000000000000000000000000" + courrier.getDept_destinataire());
+          CourrierService.saveCourrier(courrier);
+
+            if (files != null) {
+              for (MultipartFile file : files) {
+                try {
+                      String cheminFichier = System.getProperty("user.dir") + "/uploads/" + file.getOriginalFilename();                      File destinationFile = new File(cheminFichier);
+                      System.out.println("chemin " + cheminFichier);
+                      destinationFile.getParentFile().mkdirs();
+                      file.transferTo(destinationFile); // Enregistrer le fichier
+                      
+                      Fichier fichier = new Fichier();
+                      fichier.setChemin(cheminFichier);
+                      fichier.setCourrier(courrier);
+                      fichierService.saveFichier(fichier);
+                  } catch (IOException e) {
+                      System.err.println("Erreur lors de l'upload des fichiers : " + e.getMessage());
+                      return ResponseEntity.status(500).body("Erreur lors de l'upload des fichiers : " + e.getMessage());
+                  }
+
+              }
+            }
             return ResponseEntity.ok("Courrier submitted successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-    
+
     @PutMapping("/confirm_courrier")
     public ResponseEntity<Void> confirmCourrier(@RequestBody Courrier courrier) {
         CourrierService.enregistrerCourrier(courrier);

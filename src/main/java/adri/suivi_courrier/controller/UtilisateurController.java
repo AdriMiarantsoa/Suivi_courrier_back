@@ -22,6 +22,8 @@ import adri.suivi_courrier.data.entity.Departement;
 import adri.suivi_courrier.data.entity.Utilisateur;
 import adri.suivi_courrier.data.repository.UtilisateurDepartementRepository;
 import adri.suivi_courrier.data.repository.UtilisateurRepository;
+import adri.suivi_courrier.dto.EmailDetailsDto;
+import adri.suivi_courrier.email.EmailService;
 import adri.suivi_courrier.request.SigninRequest;
 import adri.suivi_courrier.request.SignupRequest;
 import adri.suivi_courrier.response.JwtAuthentificationResponse;
@@ -44,6 +46,8 @@ public class UtilisateurController {
     @Autowired
     private UtilisateurDepartementRepository utilisateurDepartementRepository;
 
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/utilisateurs")
     public ResponseEntity<List<Utilisateur>> getAllUtilisateurs() {
@@ -58,10 +62,8 @@ public class UtilisateurController {
         request.setMot_de_passe(mot_de_passe);
         request.setEmail(email);
         System.out.println("mdr " + request.getMot_de_passe() + " " + request.getNom_utilisateur()+ " " + request.getEmail());
-
         try {
             JwtAuthentificationResponse jwtResponse = authenticationService.signin(request);
-
             // Si le jeton est valide, créez la réponse
             Map<String, Object> response = new HashMap<>();
             response.put("token", jwtResponse.getToken());
@@ -107,17 +109,46 @@ public class UtilisateurController {
         return utilisateurService.getCurrentUtilisateur();
     }
 
-
     @PutMapping("/approve/{id_utilisateur}")
     public ResponseEntity<String> approve_user(@PathVariable String id_utilisateur) {
         try {
+            Utilisateur user = utilisateurService.getUtilisateurById(id_utilisateur);
             utilisateurService.updateApprove(id_utilisateur);
-            return ResponseEntity.ok("utilisateur mis à jour avec succès");
-          } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Erreur lors de la mise à jour du utilisateur : " + e.getMessage());
-          }
+            System.out.println("Envoi de l'email à : " + user.getEmail());
+
+            // Créer un objet EmailDetailsDto
+            EmailDetailsDto emailDetails = new EmailDetailsDto();
+            emailDetails.setRecipient(user.getEmail());
+            emailDetails.setEmailSubject("Votre compte a été approuvé");
+            emailDetails.setEmailBody("Félicitations, votre compte a été approuvé !");
+
+            emailService.sendApprovalEmail(emailDetails);
+            return ResponseEntity.ok("Utilisateur mis à jour avec succès");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erreur lors de la mise à jour de l'utilisateur : " + e.getMessage());
+        }
     }
-    
+ 
+    @DeleteMapping("/deleteUtilisateur/{id_utilisateur}")
+    public ResponseEntity<String> deleteDepartement(@PathVariable String id_utilisateur) {
+        try {
+            Utilisateur user = utilisateurService.getUtilisateurById(id_utilisateur);
+            utilisateurService.deleteUtilisateur(id_utilisateur);
+            System.out.println("Envoi de l'email à : " + user.getEmail());
+
+            // Créer un objet EmailDetailsDto
+            EmailDetailsDto emailDetails = new EmailDetailsDto();
+            emailDetails.setRecipient(user.getEmail());
+            emailDetails.setEmailSubject("Votre compte a été supprimé");
+            emailDetails.setEmailBody("Nous sommes désolés, votre compte a été supprimé.");
+            System.out.println("Envoi de l'email à : " + user.getEmail());
+            emailService.sendRejectionEmail(emailDetails);
+            return ResponseEntity.ok("Utilisateur supprime avec succès");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erreur lors de la suppression de l'utilisateur : " + e.getMessage());
+        }
+    }
+
     @PutMapping("/update_mdp")
     public ResponseEntity<String> update_mdp(@RequestParam("nom_utilisateur") String nom_utilisateur,@RequestParam("mot_de_passe") String mot_de_passe,@RequestParam("email") String email) {
         try {
@@ -132,11 +163,6 @@ public class UtilisateurController {
           }
     }
 
-    @DeleteMapping("/deleteUtilisateur/{id_utilisateur}")
-    public ResponseEntity<Void> deleteDepartement(@PathVariable String id_utilisateur) {
-        utilisateurService.deleteUtilisateur(id_utilisateur);
-        return ResponseEntity.noContent().build();  // Renvoie un statut 204 No Content si tout va bien
-    }
-
+ 
 
 }

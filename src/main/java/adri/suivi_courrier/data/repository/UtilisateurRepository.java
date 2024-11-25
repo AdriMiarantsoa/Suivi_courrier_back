@@ -27,6 +27,8 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, String
     @Query("SELECT u FROM Admin u WHERE u.nom_admin = :nom_admin")
     Admin getAdminByName(@Param("nom_admin") String nom_admin);
 
+    @Query("SELECT u FROM Utilisateur u WHERE u.id_utilisateur = :id_utilisateur")
+    Utilisateur findById_utilisateur(String id_utilisateur);
 
     @Modifying
     @Query("UPDATE Utilisateur u SET u.is_approved = true WHERE u.id_utilisateur = :id_utilisateur")

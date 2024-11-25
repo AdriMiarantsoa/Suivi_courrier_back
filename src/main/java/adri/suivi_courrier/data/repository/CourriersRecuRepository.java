@@ -16,9 +16,21 @@ public interface CourriersRecuRepository extends JpaRepository<CourriersRecu, St
     @Query(value = "SELECT * FROM v_courriers_recu WHERE dept_destinataire = :id_departement AND date_traitement BETWEEN :startDate AND :endDate", nativeQuery = true)
     List<CourriersRecu> findByDepartementAndDateBetween(@Param("id_departement") String id_departement, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
-    @Query(value = "SELECT * FROM v_courriers_recu WHERE dept_destinataire = :id_departement AND date_traitement BETWEEN :startDate AND :endDate AND LOWER(TRIM(expediteur)) = LOWER(TRIM(:expediteur))", nativeQuery = true)
-    List<CourriersRecu> findByDepartementAndDateBetweenAndExpeditor(@Param("id_departement") String id_departement, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,@Param("expediteur") String expediteur);
+    @Query(value = "SELECT * FROM v_courriers_recu " +
+               "WHERE dept_destinataire = :id_departement " +
+               "AND date_traitement BETWEEN :startDate AND :endDate " +
+               "AND LOWER(TRIM(expediteur)) LIKE LOWER(TRIM(CONCAT('%', :expediteur, '%')))", 
+        nativeQuery = true)
+    List<CourriersRecu> findByDepartementAndDateBetweenAndExpeditor(@Param("id_departement") String id_departement, 
+                                                                    @Param("startDate") LocalDate startDate, 
+                                                                    @Param("endDate") LocalDate endDate,
+                                                                    @Param("expediteur") String expediteur);
 
-    @Query(value = "SELECT * FROM v_courriers_recu WHERE dept_destinataire = :id_departement AND LOWER(TRIM(expediteur)) = LOWER(TRIM(:expediteur))", nativeQuery = true)
-    List<CourriersRecu> findByDepartementAndExpeditor(@Param("id_departement") String id_departement,@Param("expediteur") String expediteur);
+    @Query(value = "SELECT * FROM v_courriers_recu " +
+                "WHERE dept_destinataire = :id_departement " +
+                "AND LOWER(TRIM(expediteur)) LIKE LOWER(TRIM(CONCAT('%', :expediteur, '%')))", 
+        nativeQuery = true)
+    List<CourriersRecu> findByDepartementAndExpeditor(@Param("id_departement") String id_departement, 
+                                                    @Param("expediteur") String expediteur);
+                                                    
 }
